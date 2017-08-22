@@ -16,11 +16,15 @@ class AutomaticOffer {
         this.items = {ours: [], theirs: []};
         // Offer values
         this.currencies = {ours: {keys: 0, metal: 0}, theirs: {keys: 0, metal: 0}};
+        this.csgokeys = {ours: 0, theirs: 0};
+        this.gems = {ours: 0, theirs: 0};
         this.bought = [];
 
         this.games = [];
         if (opts.countCurrency !== false) {
             this.recountCurrency();
+            this.recountGems();
+            this.recountCsgoKeys();
         }
     }
 
@@ -36,6 +40,21 @@ class AutomaticOffer {
     static isKey(item) {
         return (item.market_hash_name || item.market_name) === "Mann Co." +
             " Supply Crate Key" && this.isUnique(item);
+    }
+
+    static isCSGOKey(item) {
+        return (item.type === "Base Grade Key" && this.notCapsule(item));
+    }
+
+    static notCapsule(item) {
+        if (item.market_hash_name.indexOf("Capsule") !== -1)
+            return false;
+        else
+            return true;
+    }
+
+    static isSackOfGems(item) {
+        return item.market_name === "Sack of Gems";
     }
 
     static isUnique(item) {
@@ -62,6 +81,10 @@ class AutomaticOffer {
     static isMetal(item) {
         const name = item.market_hash_name || item.market_name;
         return (name === "Scrap Metal" || name === "Reclaimed Metal" || name === "Refined Metal") && this.isUnique(item);
+    }
+
+    static isGems(item) {
+        return item.market_name === "Gems";
     }
 
     static isCraftWeapon(item) {
@@ -166,6 +189,16 @@ class AutomaticOffer {
         this._countCurrencies(this.exchange.theirs, this.currencies.theirs, true);
     }
 
+    recountGems() {
+        this._countGems(this.exchange.ours, true);
+        this._countGems(this.exchange.theirs, false);
+    }
+
+    recountCsgoKeys() {
+        this._countCsgokeys(this.exchange.ours, true);
+        this._countCsgokeys(this.exchange.theirs, false);
+    }
+
     summarizeItems(items) {
         let names = {};
         
@@ -229,6 +262,47 @@ Offered: ${this.summarizeCurrency(this.currencies.theirs)} (${this.summarizeItem
         // Fix x.99999 metal values
         if (cur.metal % 1 >= 0.99) {
             cur.metal = Math.round(cur.metal);
+        }
+    }
+
+    _countGems(items, ours) {
+        for (let i = 0; i < items.length; i += 1) {
+            let item = items[i];
+
+            if (this.games.indexOf(item.appid) === -1) {
+                this.games.push(item.appid);
+            }
+
+            if (AutomaticOffer.isSackOfGems(item)) {
+                if (ours)
+                    this.gems.ours += item.amount * 1000;
+                else
+                    this.gems.theirs += item.amount * 1000;
+            }
+
+            if (AutomaticOffer.isGems(item)) {
+                if (ours)
+                    this.gems.ours += item.amount;
+                else
+                    this.gems.theirs += item.amount;
+            }
+        }
+    }
+
+    _countCsgokeys(items, ours) {
+        for (let i = 0; i < items.length; i += 1) {
+            let item = items[i];
+
+            if (this.games.indexOf(item.appid) === -1) {
+                this.games.push(item.appid);
+            }
+
+            if (AutomaticOffer.isCSGOKey(item)) {
+                if (ours)
+                    this.csgokeys.ours++;
+                else
+                    this.csgokeys.theirs++;
+            }
         }
     }
 
