@@ -1,0 +1,38 @@
+{
+    "dateFormat": "HH:mm:ss",
+    "acceptGifts": true,
+    "declineBanned": true,
+    "acceptEscrow": false,
+    "currencyExchange": {
+        "metal->keys": false,
+        "keys->metal": false
+    },
+    "buyGemsTF2Key": 3250,
+    "buyGemsCSGOKey": 3800,
+    "sellGemsTF2Key": 2320,
+    "sellGemsCSGOKey": 2700,
+    "sellGemsRef": 77.33,
+    "buyGemsRef": 111,
+    "TF2KeyRefPrice": 30,
+    "buyCSGORefPrice": 35,
+    "sellCSGORefPrice": 33,
+    "buyOrders": true,
+    "confirmations": "all",
+    "logs": {
+        "console": {
+            "level": "verbose"
+        },
+        "file": {
+            "filename": "automatic.log",
+            "disabled": false,
+            "level": "info"
+        },
+        "trade": {
+            "filename": "automatic.trade.log",
+            "disabled": false
+        }
+    },
+    "owners": [
+        "<steamid64s>"
+    ]
+}
