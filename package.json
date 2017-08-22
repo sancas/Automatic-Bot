@@ -28,12 +28,16 @@
       "name": "fisk",
       "email": "myself@fiskie.me",
       "url": "http://fiskie.me"
+    },
+    {
+      "name": "sancas",
+      "email": "sancas19@gmail.com"
     }
   ],
   "main": "./automatic.js",
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/jessecar/backpack.tf-automatic.git"
+    "url": "https://github.com/sancas/Automatic-Bot.git"
   },
   "dependencies": {
     "axios": "^0.15.3",
@@ -50,9 +54,9 @@
     "node": ">=4.0.0"
   },
   "readmeFilename": "README.md",
-  "license": "CC-BY-NC-SA-4.0",
+  "license": "MIT",
   "bugs": {
-    "url": "https://bitbucket.org/jessecar/backpack.tf-automatic/issues"
+    "url": "https://github.com/sancas/Automatic-Bot/issues"
   },
   "devDependencies": {
     "chai": "^3.5.0",
